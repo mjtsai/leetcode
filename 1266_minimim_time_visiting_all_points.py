@@ -18,11 +18,12 @@ class Solution(object):
         for i in range(0, len(points)-1):
             h = abs(points[i][0] - points[i+1][0])
             v = abs(points[i][1] - points[i+1][1])
-            mn = min(h, v)
+#            mn = min(h, v)
             mx = max(h, v)
-            s = mx-mn
+#            s = mx-mn
 
-            step = step + mn + s
+#            step = step + mn + s
+            step = step + mx
 
         return step
 
