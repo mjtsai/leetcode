@@ -6,7 +6,6 @@ import os
 from copy import deepcopy
 import math
 
-MAX_VAL = 10000
 
 class Solution(object):
     def updateMatrix(self, matrix):
@@ -14,7 +13,8 @@ class Solution(object):
         :type matrix: List[List[int]]
         :rtype: List[List[int]]
         """
-  
+        
+        
         n_neighbors_le_0 = 4
         dist_contour = 1
 
@@ -24,31 +24,32 @@ class Solution(object):
 
             for row in range(0, len(matrix)):
                 for col in range(0, len(matrix[row])):
-                    if(matrix[row][col]==0):
+                    if(matrix[row][col]<=0):
                         continue
                     neighbors = []
                     if row-1>=0 : neighbors.append(matrix[row-1][col])
                     if col-1>=0 : neighbors.append(matrix[row][col-1])
                     if row+1<len(matrix) : neighbors.append(matrix[row+1][col])
                     if col+1<len(matrix[row]) : neighbors.append(matrix[row][col+1])
-                    
-                    neighbors = [n for n in neighbors if -n+1 == dist_countour]
+
+                    neighbors = [n for n in neighbors if (-n+1) == dist_contour]
                     if(len(neighbors)):
-                        dist = -dist_contour+1
+                        dist = -dist_contour
                         if(dist != matrix[row][col]):
-                            value_changes = True
-                            maxtrix[row][col] = dist
+                            value_change = True
+                            matrix[row][col] = dist
 
             #
-            dist_countour = dist_countour+1
+            dist_contour = dist_contour+1
 
         #
         for row in range(0, len(matrix)):
-            for col in range(0, len(row)):
+            for col in range(0, len(matrix[row])):
                 assert(matrix[row][col]<=0)
                 matrix[row][col] = -matrix[row][col]
         
         return matrix
+
 
 
 
