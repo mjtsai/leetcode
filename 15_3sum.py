@@ -20,6 +20,7 @@ class Solution(object):
         tsum = set()
 
         nums.sort()
+        print("nums={}".format(nums))
 
         neg_idx = next((k for k in range(0, len(nums)) if nums[k]<0), None)
         print("neg_idx={}".format(neg_idx))
@@ -34,116 +35,27 @@ class Solution(object):
             return []
 
 
+
+        #!! ref to 2 pointers answer
+
         # 000 or -0+ or --+ or -++
 
+        for i in range(0, len(nums)):
 
-        # 000
-        if zero_idx!=None and ((pos_idx!=None and ((pos_idx-zero_idx)>=3)) or ((pos_idx==None) and (len(nums)-zero_idx)>=3)):
-            print("000")
-            t = sorted((0, 0, 0))
-#            print("t={}".format(t))
-            tsum.add(tuple(t))
+            j = i+1
+            k = len(nums)-1
+            r = 0-nums[i]
 
-        # -0+
-        if neg_idx!=None and zero_idx!=None and pos_idx!=None:
-            print("-0+")
-            last_x=None
-            for i in range(neg_idx, zero_idx):
-            #{{{
-                if nums[i] == last_x:
-                    continue             
-                if nums[i]<-100000:
-                    break
-
-                r = 0-nums[i]
-#                print("[{}]={} r={}".format(i, nums[i], r))
-                assert(r>=0)
-                #
-                try:
-                    k = nums.index(r, pos_idx)
-#                    print("k={}".format(k))
-                    t = sorted((nums[i], 0, nums[k]))
-#                    print("t={}".format(t))
+            while(j<k):
+                if( nums[j]+nums[k] == r):
+                    t = sorted((nums[i], nums[j], nums[k]))
                     tsum.add(tuple(t))
-                    last_x = nums[i]
-                except(ValueError):
-                    last_x = nums[i]                    
-                    continue
-            #}}}
-
-        # --+
-        if neg_idx!=None and pos_idx!=None:
-            print("--+")
-            if zero_idx==None:
-                zero_idx=pos_idx
-            last_p = None
-            for i in range(neg_idx, zero_idx):
-                for j in range(i+1, zero_idx):
-                #{{{
-                    if i==j:
-                        continue
-                    if sorted([nums[i], nums[j]])==last_p:
-                        continue
-                    if (nums[i]+nums[j])<-100000:
-                        break
-
-                    r = 0-nums[i]-nums[j]
-#                    print("[{}]={} [{}]={} r={}".format(i, nums[i], j, nums[j], r))
-                    assert(r>=0)
-
-                    #
-                    try:
-                        k = nums.index(r, pos_idx)
-#                        print("k={}".format(k))
-                        if k==i or k==j:
-                            continue
-
-                        t = sorted((nums[i], nums[j], nums[k]))
-#                        print("t={}".format(t))
-                        tsum.add(tuple(t))
-                        last_p = sorted([nums[i], nums[j]])
-                    except(ValueError):
-                        last_p = sorted([nums[i], nums[j]])                        
-                        continue
-                #}}}
-
-
-        # -++
-        if neg_idx!=None and pos_idx!=None:
-            print("-++")
-            if zero_idx==None:
-                zero_idx=pos_idx
-            last_p=None
-            for i in range(pos_idx, len(nums)):
-                for j in range(i+1, len(nums)):
-                #{{{
-                    if i==j:
-                        continue
-                    if sorted([nums[i], nums[j]])==last_p:
-                        continue
-                    if (nums[i]+nums[j])>100000:
-                        break
-
-                    r = 0-nums[i]-nums[j]
-#                    print("[{}]={} [{}]={} r={}".format(i, nums[i], j, nums[j], r))
-                    assert(r<=0)
-
-                    #
-                    try:
-                        k = nums.index(r, neg_idx, zero_idx)
-#                        print("k={}".format(k))
-                        if k==i or k==j:
-                            continue
-
-                        t = sorted((nums[i], nums[j], nums[k]))
-#                        print("t={}".format(t))
-                        tsum.add(tuple(t))
-                        last_p = sorted([nums[i], nums[j]])
-
-                    except(ValueError):
-                        last_p = sorted([nums[i], nums[j]])                        
-                        continue
-                #}}}
+                    j = j+1
+                    k = k-1
+                elif(nums[j]+nums[k] <r):
+                    j = j+1
+                elif(nums[j]+nums[k] >r):
+                    k = k-1
 
         tsum = list(map(list, tsum))
         print(tsum)
@@ -245,6 +157,34 @@ def main():
     print("sol9={}".format(sol9))
 #    print("ans9={}".format(ans9))
 #    assert(ans9 == sol9)
+
+
+    # wrong answer
+    nums10   = [1,1,-2]
+    ans10    = [[-2,1,1]]
+    sol10 = sol.threeSum(nums10)
+
+    print("sol10={}".format(sol10))
+    print("ans10={}".format(ans10))
+    assert(ans10 == sol10)
+
+    # wrong answer
+    nums11   = [1,2,-2,-1]
+    ans11    = []
+    sol11 = sol.threeSum(nums11)
+
+    print("sol11={}".format(sol11))
+    print("ans11={}".format(ans11))
+    assert(ans11 == sol11)
+
+    # wrong answer
+    nums12   = [-2,0,1,1,2]
+    ans12    = [[-2,0,2],[-2,1,1]]
+    sol12 = sol.threeSum(nums12)
+
+    print("sol12={}".format(sol12))
+    print("ans12={}".format(ans12))
+    assert(ans12 == sol12)
 
 
 
